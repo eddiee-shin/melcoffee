@@ -23,6 +23,15 @@
 
   <script src="/inline_data.js"></script>
   <script>
+    // debugging overlay
+    (function(){
+      const dbg = document.createElement('pre'); dbg.id='debuglog'; dbg.style.position='fixed'; dbg.style.left='10px'; dbg.style.right='10px'; dbg.style.bottom='10px'; dbg.style.maxHeight='40vh'; dbg.style.overflow='auto'; dbg.style.background='rgba(0,0,0,0.7)'; dbg.style.color='#fff'; dbg.style.padding='8px'; dbg.style.fontSize='12px'; dbg.style.display='none'; document.body.appendChild(dbg);
+      function log(m){ dbg.style.display='block'; dbg.textContent += m+'\n'; }
+      window.DEVLOG = log;
+      window.addEventListener('error', e=>{ log('ERROR: '+(e && e.message)); });
+      window.addEventListener('unhandledrejection', e=>{ log('PROMISE REJECTION: '+(e && e.reason)); });
+    })();
+
     async function load(){
       let items = [];
       try{
