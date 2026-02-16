@@ -13,7 +13,9 @@
     <label>Name <input id="name"></label>
     <label>Location <input id="location"></label>
     <label>Image URL <input id="image"></label>
+    <label>Or upload image: <input type="file" id="imageFile" accept="image/*"></label>
     <label><input type="checkbox" id="visited"> Visited</label>
+    <button id="uploadBtn">Upload</button>
     <button id="create">Create</button>
   </div>
   <hr>
@@ -43,6 +45,20 @@
       const r = await fetch('/api/coffee/'+id+'?token='+encodeURIComponent(token),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
       if(r.ok) loadList(); else alert('update failed');
     }}
+    document.getElementById('uploadBtn').onclick = async ()=>{
+      const file = document.getElementById('imageFile').files[0];
+      if(!file) return alert('choose file');
+      const form = new FormData(); form.append('image', file);
+      const pw = prompt('Admin password for upload');
+      if(!pw) return; // login via session
+      // login first
+      const lr = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({password:pw})});
+      if(!lr.ok) return alert('login failed');
+      const r = await fetch('/api/upload', {method:'POST', body: form});
+      if(r.ok){ const j = await r.json(); document.getElementById('image').value = j.url; alert('uploaded'); }
+      else alert('upload failed');
+    };
+
     document.getElementById('create').onclick = async ()=>{
       const name = document.getElementById('name').value;
       const location = document.getElementById('location').value;

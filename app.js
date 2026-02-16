@@ -10,6 +10,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,'public')));
+// serve uploaded images
+app.use('/uploads', express.static(path.join(__dirname,'public','uploads')));
 
 function readData(){
   if(!fs.existsSync(DATA_FILE)) return [];
@@ -99,6 +101,25 @@ app.post('/api/login', async (req, res)=>{
 
 // logout
 app.post('/api/logout', (req,res)=>{ req.session.destroy(()=>res.json({ok:true})); });
+
+// file upload (admin only)
+const multer = require('multer');
+const uploadDir = path.join(__dirname,'public','uploads');
+fs.mkdirSync(uploadDir, { recursive: true });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) { cb(null, uploadDir); },
+  filename: function (req, file, cb) {
+    const safe = Date.now() + '-' + file.originalname.replace(/[^a-z0-9.\-\_]/gi,'_');
+    cb(null, safe);
+  }
+});
+const upload = multer({ storage });
+
+app.post('/api/upload', requireAdmin, upload.single('image'), (req,res)=>{
+  if(!req.file) return res.status(400).json({error:'no file'});
+  const url = '/uploads/' + req.file.filename;
+  res.json({url});
+});
 
 // API: create
 app.post('/api/coffee', requireAdmin, (req,res)=>{
