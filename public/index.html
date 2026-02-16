@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>melcoffee — Coffee Bingo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{font-family:system-ui,Arial;margin:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+    .card{border:1px solid #ddd;padding:8px;border-radius:8px;text-align:center}
+    .card img{max-width:100%;height:120px;object-fit:cover;border-radius:6px}
+    .controls{margin-bottom:12px}
+  </style>
+</head>
+<body>
+  <h1>melcoffee — Coffee Bingo</h1>
+  <p>Click a cup to mark visited.</p>
+  <div class="controls">
+    <button id="showAll">Reload</button>
+    <button id="download">Download CSV</button>
+  </div>
+  <div id="grid" class="grid"></div>
+
+  <script>
+    async function load(){
+      const res = await fetch('/api/coffee');
+      const items = await res.json();
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      items.forEach(it=>{
+        const el = document.createElement('div'); el.className='card';
+        const img = document.createElement('img');
+        img.src = it.image || '';
+        img.alt = it.name;
+        const h = document.createElement('div'); h.textContent = it.name;
+        const p = document.createElement('div'); p.style.fontSize='12px'; p.textContent = it.location || '';
+        const btn = document.createElement('button'); btn.textContent = it.visited? 'Visited':'Mark';
+        btn.onclick = async ()=>{
+          // toggle visited (no auth on frontend)
+          const token = prompt('Admin token (required to update)');
+          if(!token) return alert('need token');
+          const r = await fetch('/api/coffee/'+it.id+'?token='+encodeURIComponent(token),{
+            method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({visited: !it.visited})
+          });
+          if(r.ok){ load(); }
+          else{ alert('update failed'); }
+        };
+        el.appendChild(img); el.appendChild(h); el.appendChild(p); el.appendChild(btn);
+        grid.appendChild(el);
+      });
+    }
+    document.getElementById('showAll').addEventListener('click', load);
+    document.getElementById('download').addEventListener('click', async ()=>{
+      const res = await fetch('/api/coffee'); const items = await res.json();
+      const csv = ['id,name,location,image,visited'].concat(items.map(i=>`${i.id},"${(i.name||'').replace(/"/g,'""')}","${(i.location||'').replace(/"/g,'""')}",${i.image || ''},${i.visited?1:0}`)).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download='melcoffee_list.csv'; a.click(); URL.revokeObjectURL(url);
+    });
+    load();
+  </script>
+</body>
+</html>
