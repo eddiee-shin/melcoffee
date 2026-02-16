@@ -28,6 +28,7 @@
         const res = await fetch('/api/coffee');
         if(res.ok) items = await res.json();
       }catch(e){/* ignore */}
+      if((!items || items.length===0) && window.INIT_COFFEE){ items = window.INIT_COFFEE; }
       if(!items || items.length===0){
         try{
           const res2 = await fetch('/data/coffee.json');
