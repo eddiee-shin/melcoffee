@@ -21,7 +21,7 @@
   </div>
   <div id="grid" class="grid"></div>
 
-  <script src="/inline_data.js"></script>
+  <script src="inline_data.js"></script>
   <script>
     // debugging overlay
     (function(){
@@ -41,7 +41,7 @@
       if((!items || items.length===0) && window.INIT_COFFEE){ items = window.INIT_COFFEE; }
       if(!items || items.length===0){
         try{
-          const res2 = await fetch('/data/coffee.json');
+          const res2 = await fetch('data/coffee.json');
           if(res2.ok) items = await res2.json();
         }catch(e){}
       }
