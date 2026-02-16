@@ -63,12 +63,42 @@ app.post('/api/recommend', (req, res) => {
 });
 
 // simple admin protect with a environment token (not secure for prod)
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+
+// session setup
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'melcoffee_secret_change',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24*60*60*1000 }
+}));
+
+// admin password (plaintext in env) - hashed on startup
+const ADMIN_PASSWORD = process.env.MELCOFFEE_ADMIN_PASSWORD || 'changeme';
 const ADMIN_TOKEN = process.env.MELCOFFEE_ADMIN_TOKEN || 'changeme';
+let ADMIN_HASH = null;
+(async ()=>{ ADMIN_HASH = await bcrypt.hash(ADMIN_PASSWORD, 10); })();
+
 function requireAdmin(req,res,next){
+  // allow x-admin-token or session
   const t = req.headers['x-admin-token'] || req.query.token;
-  if(t !== ADMIN_TOKEN) return res.status(401).json({error:'unauthorized'});
-  next();
+  if(t && t === ADMIN_TOKEN) return next();
+  if(req.session && req.session.isAdmin) return next();
+  return res.status(401).json({error:'unauthorized'});
 }
+
+// login endpoint
+app.post('/api/login', async (req, res)=>{
+  const pw = req.body && req.body.password;
+  if(!pw) return res.status(400).json({error:'password required'});
+  const ok = await bcrypt.compare(pw, ADMIN_HASH);
+  if(ok){ req.session.isAdmin = true; return res.json({ok:true}); }
+  return res.status(401).json({error:'invalid'});
+});
+
+// logout
+app.post('/api/logout', (req,res)=>{ req.session.destroy(()=>res.json({ok:true})); });
 
 // API: create
 app.post('/api/coffee', requireAdmin, (req,res)=>{
