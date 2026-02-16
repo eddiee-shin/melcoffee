@@ -63,10 +63,13 @@
         const res = await fetch('/api/recommend', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
         if(res.ok) data = await res.json();
       }catch(e){}
-      // fallback: local scoring
-      if(!data || data.length===0){
+      // fallback: inline data or local scoring
+      let items = [];
+      if((!data || data.length===0) && window.INIT_COFFEE) items = window.INIT_COFFEE;
+      if(!items || items.length===0){
         const r2 = await fetch('/data/coffee.json');
-        const items = r2.ok ? await r2.json() : [];
+        if(r2.ok) items = await r2.json();
+      }
         // simple client-side scoring similar to server
         function scoreItem(item){ let score=0; const tags=(item.tags||[]).map(t=>t.toLowerCase()); if(body.milk){ if(body.milk==='rich' && tags.includes('flat white')) score+=2; if(body.milk==='light' && tags.includes('long black')) score+=2; } if(body.strength){ if(body.strength==='strong' && tags.includes('strong')) score+=2; if(body.strength==='mild' && tags.includes('smooth')) score+=2; } if(body.price){ if(body.price==='cheap' && tags.includes('affordable')) score+=1; if(body.price==='expensive' && tags.includes('premium')) score+=1; } if(typeof body.iced==='boolean'){ if(body.iced && tags.includes('iced')) score+=1; if(!body.iced && tags.includes('hot')) score+=1; } if(body.vibe){ if(tags.includes(body.vibe)) score+=1; } if(item.popularity) score += Math.min(2, item.popularity/50); return score; }
         const scored = items.map(i=>({item:i, score: scoreItem(i)})); scored.sort((a,b)=>b.score-a.score); data = scored.slice(0,8).map(s=>({score:s.score, item:s.item}));
