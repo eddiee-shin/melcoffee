@@ -23,8 +23,17 @@
 
   <script>
     async function load(){
-      const res = await fetch('/api/coffee');
-      const items = await res.json();
+      let items = [];
+      try{
+        const res = await fetch('/api/coffee');
+        if(res.ok) items = await res.json();
+      }catch(e){/* ignore */}
+      if(!items || items.length===0){
+        try{
+          const res2 = await fetch('/data/coffee.json');
+          if(res2.ok) items = await res2.json();
+        }catch(e){}
+      }
       const grid = document.getElementById('grid');
       grid.innerHTML = '';
       items.forEach(it=>{
