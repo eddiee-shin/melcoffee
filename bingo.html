@@ -77,7 +77,14 @@
         } else {
           const it = cells[i];
           const img = document.createElement('img');
-          img.src = it.image || '';
+          try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
+          img.alt = it.name || '';
+          img.loading = 'lazy';
+          img.style.background = '#fafafa';
+          (function(idx, imgEl){
+            const fallback = 'https://eddiee-shin.github.io/melcoffee/images/img'+((idx%6)+1)+'.png';
+            imgEl.onerror = function(){ if(this.src===fallback) return; try{ this.src = fallback + (fallback.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){} };
+          })(i, img);
           const name = document.createElement('div'); name.className='name'; name.textContent = it.name || '';
           cell.appendChild(img); cell.appendChild(name);
         }

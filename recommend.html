@@ -87,7 +87,11 @@
       data.forEach(entry=>{
         const it = entry.item;
         const card = document.createElement('div'); card.style.border='1px solid #ddd'; card.style.padding='8px'; card.style.margin='8px 0';
-        const img = document.createElement('img'); img.src = it.image||''; img.style.maxWidth='120px'; img.style.float='left'; img.style.marginRight='12px';
+        const img = document.createElement('img');
+        try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
+        img.style.maxWidth='120px'; img.style.float='left'; img.style.marginRight='12px'; img.alt = it.name || '';
+        img.loading = 'lazy'; img.style.background='#fafafa';
+        (function(idx,imgEl){ const fallback='https://eddiee-shin.github.io/melcoffee/images/img'+((idx%6)+1)+'.png'; imgEl.onerror=function(){ if(this.src===fallback) return; try{ this.src=fallback + (fallback.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){} }; })(index, img);
         const title = document.createElement('div'); title.innerHTML = `<b>${it.name}</b> (${it.location||''})`;
         const tags = document.createElement('div'); tags.textContent = (it.tags||[]).join(', ');
         const score = document.createElement('div'); score.textContent = 'Score: '+entry.score;
