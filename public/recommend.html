@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>melcoffee — Coffee Recommender</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>body{font-family:system-ui,Arial;margin:20px} label{display:block;margin:8px 0}</style>
+</head>
+<body>
+  <h1>Find a coffee for you</h1>
+  <form id="qform">
+    <label>Milk preference:
+      <select name="milk">
+        <option value="">No preference</option>
+        <option value="light">Light (long black / americano)</option>
+        <option value="normal">Normal</option>
+        <option value="rich">Rich (flat white / latte)</option>
+      </select>
+    </label>
+    <label>Strength:
+      <select name="strength">
+        <option value="">No preference</option>
+        <option value="mild">Mild</option>
+        <option value="regular">Regular</option>
+        <option value="strong">Strong</option>
+      </select>
+    </label>
+    <label>Price:
+      <select name="price">
+        <option value="">No preference</option>
+        <option value="cheap">Budget</option>
+        <option value="mid">Mid</option>
+        <option value="expensive">Premium</option>
+      </select>
+    </label>
+    <label>Hot or Iced:
+      <select name="iced">
+        <option value="">Either</option>
+        <option value="true">Iced</option>
+        <option value="false">Hot</option>
+      </select>
+    </label>
+    <label>Vibe:
+      <select name="vibe">
+        <option value="">Any</option>
+        <option value="quiet">Quiet</option>
+        <option value="trendy">Trendy</option>
+        <option value="cozy">Cozy</option>
+      </select>
+    </label>
+    <button type="submit">Recommend</button>
+  </form>
+  <hr>
+  <div id="results"></div>
+
+  <script>
+    document.getElementById('qform').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = { milk: fd.get('milk') || undefined, strength: fd.get('strength') || undefined, price: fd.get('price') || undefined, iced: fd.get('iced')===''?undefined:(fd.get('iced')==='true'), vibe: fd.get('vibe') || undefined };
+      const res = await fetch('/api/recommend', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+      const data = await res.json();
+      const div = document.getElementById('results'); div.innerHTML='';
+      if(!data.length) return div.textContent='No recommendations (add more places in admin).';
+      data.forEach(entry=>{
+        const it = entry.item;
+        const card = document.createElement('div'); card.style.border='1px solid #ddd'; card.style.padding='8px'; card.style.margin='8px 0';
+        const img = document.createElement('img'); img.src = it.image||''; img.style.maxWidth='120px'; img.style.float='left'; img.style.marginRight='12px';
+        const title = document.createElement('div'); title.innerHTML = `<b>${it.name}</b> (${it.location||''})`;
+        const tags = document.createElement('div'); tags.textContent = (it.tags||[]).join(', ');
+        const score = document.createElement('div'); score.textContent = 'Score: '+entry.score;
+        card.appendChild(img); card.appendChild(title); card.appendChild(tags); card.appendChild(score);
+        div.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>

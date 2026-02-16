@@ -25,6 +25,43 @@ app.get('/api/coffee', (req,res)=>{
   res.json(readData());
 });
 
+// Recommendation endpoint
+app.post('/api/recommend', (req, res) => {
+  const answers = req.body || {};
+  const items = readData();
+  // simple scoring by matching preferences -> tag map
+  // expected answers: {milk: 'light'|'normal'|'rich', strength: 'mild'|'regular'|'strong', price: 'cheap'|'mid'|'expensive', iced: true/false, vibe: 'quiet'|'trendy'|'cozy'}
+  function scoreItem(item){
+    let score = 0;
+    const tags = (item.tags || []).map(t=>t.toLowerCase());
+    if(answers.milk){
+      if(answers.milk==='rich' && tags.includes('flat white')) score+=2;
+      if(answers.milk==='light' && tags.includes('long black')) score+=2;
+    }
+    if(answers.strength){
+      if(answers.strength==='strong' && tags.includes('strong')) score+=2;
+      if(answers.strength==='mild' && tags.includes('smooth')) score+=2;
+    }
+    if(answers.price){
+      if(answers.price==='cheap' && tags.includes('affordable')) score+=1;
+      if(answers.price==='expensive' && tags.includes('premium')) score+=1;
+    }
+    if(typeof answers.iced==='boolean'){
+      if(answers.iced && tags.includes('iced')) score+=1;
+      if(!answers.iced && tags.includes('hot')) score+=1;
+    }
+    if(answers.vibe){
+      if(tags.includes(answers.vibe)) score+=1;
+    }
+    // small popularity boost
+    if(item.popularity) score += Math.min(2, item.popularity/50);
+    return score;
+  }
+  const scored = items.map(i=>({item:i, score: scoreItem(i)}));
+  scored.sort((a,b)=>b.score-a.score);
+  res.json(scored.slice(0,8).map(s=>({score:s.score, item:s.item})));
+});
+
 // simple admin protect with a environment token (not secure for prod)
 const ADMIN_TOKEN = process.env.MELCOFFEE_ADMIN_TOKEN || 'changeme';
 function requireAdmin(req,res,next){
