@@ -62,6 +62,14 @@
         img.alt = it.name;
         img.loading = 'lazy';
         img.style.background = '#fafafa';
+        // fallback: if image fails, replace with a stable placeholder hosted on gh-pages
+        (function(i,imgEl){
+          const fallback = 'https://eddiee-shin.github.io/melcoffee/images/img'+((i%6)+1)+'.png';
+          imgEl.onerror = function(){
+            if(this.src === fallback) return; // already tried
+            try{ this.src = fallback + (fallback.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){}
+          };
+        })(items.indexOf(it), img);
         a.appendChild(img);
         const h = document.createElement('div'); h.textContent = it.name;
         const p = document.createElement('div'); p.style.fontSize='12px'; p.textContent = it.location || '';
