@@ -57,8 +57,11 @@
         const el = document.createElement('div'); el.className='card';
         const a = document.createElement('a'); a.href = it.url || '#'; a.target = '_blank'; a.rel = 'noopener noreferrer';
         const img = document.createElement('img');
-        img.src = it.image || '';
+        // force fresh fetch to avoid cached/relative-load issues
+        try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
         img.alt = it.name;
+        img.loading = 'lazy';
+        img.style.background = '#fafafa';
         a.appendChild(img);
         const h = document.createElement('div'); h.textContent = it.name;
         const p = document.createElement('div'); p.style.fontSize='12px'; p.textContent = it.location || '';
