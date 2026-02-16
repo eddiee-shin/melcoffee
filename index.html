@@ -55,9 +55,11 @@
       grid.innerHTML = '';
       items.forEach(it=>{
         const el = document.createElement('div'); el.className='card';
+        const a = document.createElement('a'); a.href = it.url || '#'; a.target = '_blank'; a.rel = 'noopener noreferrer';
         const img = document.createElement('img');
         img.src = it.image || '';
         img.alt = it.name;
+        a.appendChild(img);
         const h = document.createElement('div'); h.textContent = it.name;
         const p = document.createElement('div'); p.style.fontSize='12px'; p.textContent = it.location || '';
         const btn = document.createElement('button'); btn.textContent = it.visited? 'Visited':'Mark';
@@ -71,7 +73,7 @@
           if(r.ok){ load(); }
           else{ alert('update failed'); }
         };
-        el.appendChild(img); el.appendChild(h); el.appendChild(p); el.appendChild(btn);
+        el.appendChild(a); el.appendChild(h); el.appendChild(p); el.appendChild(btn);
         grid.appendChild(el);
       });
     }
