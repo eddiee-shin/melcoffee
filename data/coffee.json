@@ -112,20 +112,6 @@
     "url": "https://www.google.com/search?q=Small+Batch+Fitzroy"
   },
   {
-    "id": 9,
-    "name": "Short Stop",
-    "location": "South Yarra",
-    "image": "images/real_9.jpg",
-    "tags": [
-      "quick",
-      "iced",
-      "affordable"
-    ],
-    "popularity": 55,
-    "visited": false,
-    "url": "https://www.google.com/search?q=Short+Stop+South+Yarra"
-  },
-  {
     "id": 10,
     "name": "Brick Lane",
     "location": "Melbourne",
