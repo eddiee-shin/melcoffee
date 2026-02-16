@@ -88,7 +88,7 @@
         const it = entry.item;
         const card = document.createElement('div'); card.style.border='1px solid #ddd'; card.style.padding='8px'; card.style.margin='8px 0';
         const img = document.createElement('img');
-        try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
+        try{ if((it.image||'').startsWith('data:')) img.src = it.image; else img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
         img.style.maxWidth='120px'; img.style.float='left'; img.style.marginRight='12px'; img.alt = it.name || '';
         img.loading = 'lazy'; img.style.background='#fafafa';
         (function(idx,imgEl){ const fallback='https://eddiee-shin.github.io/melcoffee/images/img'+((idx%6)+1)+'.png'; imgEl.onerror=function(){ if(this.src===fallback) return; try{ this.src=fallback + (fallback.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){} }; })(index, img);

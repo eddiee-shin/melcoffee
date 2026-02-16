@@ -77,7 +77,7 @@
         } else {
           const it = cells[i];
           const img = document.createElement('img');
-          try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
+          try{ if((it.image||'').startsWith('data:')) img.src = it.image; else img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
           img.alt = it.name || '';
           img.loading = 'lazy';
           img.style.background = '#fafafa';

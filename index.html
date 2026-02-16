@@ -58,7 +58,10 @@
         const a = document.createElement('a'); a.href = it.url || '#'; a.target = '_blank'; a.rel = 'noopener noreferrer';
         const img = document.createElement('img');
         // force fresh fetch to avoid cached/relative-load issues
-        try{ img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); }catch(e){ img.src = it.image||''; }
+        try{ 
+          if((it.image||'').startsWith('data:')) img.src = it.image; 
+          else img.src = (it.image || '') + (it.image && it.image.indexOf('?')>-1? '&v=' : '?v=') + Date.now(); 
+        }catch(e){ img.src = it.image||''; }
         img.alt = it.name;
         img.loading = 'lazy';
         img.style.background = '#fafafa';
