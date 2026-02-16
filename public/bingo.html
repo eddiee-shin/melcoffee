@@ -41,9 +41,10 @@
     }
 
     async function loadAndRender(seedStr){
-      const res = await fetch('/api/coffee');
-      const items = await res.json();
-      if(!items.length){ document.getElementById('bingo').innerHTML = '<p>No items yet. Add via /admin</p>'; return; }
+      let items = [];
+      try{ const res = await fetch('/api/coffee'); if(res.ok) items = await res.json(); }catch(e){}
+      if(!items || items.length===0){ try{ const r2 = await fetch('/data/coffee.json'); if(r2.ok) items = await r2.json(); }catch(e){} }
+      if(!items || !items.length){ document.getElementById('bingo').innerHTML = '<p>No items yet. Add via /admin</p>'; return; }
       const seed = seedStr || (Math.random().toString(36).slice(2,8));
       const r = rng(seed);
       // shuffle
