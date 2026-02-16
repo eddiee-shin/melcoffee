@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>melcoffee Admin</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>body{font-family:system-ui;padding:20px} label{display:block;margin-top:8px}</style>
+</head>
+<body>
+  <h1>melcoffee — Admin</h1>
+  <p>Use admin token to manage list.</p>
+  <div>
+    <label>Name <input id="name"></label>
+    <label>Location <input id="location"></label>
+    <label>Image URL <input id="image"></label>
+    <label><input type="checkbox" id="visited"> Visited</label>
+    <button id="create">Create</button>
+  </div>
+  <hr>
+  <div id="list"></div>
+
+  <script>
+    async function loadList(){
+      const res = await fetch('/api/coffee'); const items = await res.json();
+      const div = document.getElementById('list'); div.innerHTML='';
+      items.forEach(it=>{
+        const row = document.createElement('div');
+        row.innerHTML = `<b>${it.name}</b> (${it.location||''}) <button data-id="${it.id}">Edit</button> <button data-del="${it.id}">Delete</button>`;
+        div.appendChild(row);
+      });
+      div.querySelectorAll('button[data-id]').forEach(b=>b.onclick=()=>edit(b.dataset.id));
+      div.querySelectorAll('button[data-del]').forEach(b=>del(b.dataset.del));
+    }
+    function del(id){ return async ()=>{
+      const token = prompt('admin token'); if(!token) return;
+      if(!confirm('Delete?')) return;
+      const r = await fetch('/api/coffee/'+id+'?token='+encodeURIComponent(token),{method:'DELETE'});
+      if(r.ok) loadList(); else alert('delete failed');
+    }}
+    function edit(id){ return async ()=>{
+      const token = prompt('admin token'); if(!token) return;
+      const name = prompt('New name'); if(!name) return;
+      const r = await fetch('/api/coffee/'+id+'?token='+encodeURIComponent(token),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+      if(r.ok) loadList(); else alert('update failed');
+    }}
+    document.getElementById('create').onclick = async ()=>{
+      const token = prompt('admin token'); if(!token) return;
+      const name = document.getElementById('name').value;
+      const location = document.getElementById('location').value;
+      const image = document.getElementById('image').value;
+      const visited = document.getElementById('visited').checked;
+      const r = await fetch('/api/coffee?token='+encodeURIComponent(token),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,location,image,visited})});
+      if(r.ok){ document.getElementById('name').value=''; document.getElementById('location').value=''; document.getElementById('image').value=''; document.getElementById('visited').checked=false; loadList(); }
+      else alert('create failed');
+    };
+    loadList();
+  </script>
+</body>
+</html>
