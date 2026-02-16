@@ -3,7 +3,7 @@
     "id": 1,
     "name": "St. Ali",
     "location": "South Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img1.png",
+    "image": "images/real_1.jpg",
     "tags": [
       "flat white",
       "trendy",
@@ -17,7 +17,7 @@
     "id": 2,
     "name": "Puzzle",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img2.png",
+    "image": "images/real_2.jpg",
     "tags": [
       "cozy",
       "flat white",
@@ -31,7 +31,7 @@
     "id": 3,
     "name": "Maker",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img3.png",
+    "image": "images/real_3.jpg",
     "tags": [
       "specialty",
       "trendy",
@@ -45,7 +45,7 @@
     "id": 4,
     "name": "Little Rogue",
     "location": "Collingwood",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img4.png",
+    "image": "images/real_4.jpg",
     "tags": [
       "cozy",
       "small",
@@ -59,7 +59,7 @@
     "id": 5,
     "name": "Market Lane",
     "location": "Melbourne CBD",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img5.png",
+    "image": "images/real_5.jpg",
     "tags": [
       "specialty",
       "premium",
@@ -73,7 +73,7 @@
     "id": 6,
     "name": "Ona",
     "location": "Brunswick",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img6.png",
+    "image": "images/real_6.jpg",
     "tags": [
       "specialty",
       "strong",
@@ -87,7 +87,7 @@
     "id": 7,
     "name": "Seven Seeds",
     "location": "Carlton",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img1.png",
+    "image": "images/real_7.jpg",
     "tags": [
       "trendy",
       "flat white",
@@ -101,7 +101,7 @@
     "id": 8,
     "name": "Small Batch",
     "location": "Fitzroy",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img2.png",
+    "image": "images/real_8.jpg",
     "tags": [
       "specialty",
       "cozy",
@@ -115,7 +115,7 @@
     "id": 9,
     "name": "Short Stop",
     "location": "South Yarra",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img3.png",
+    "image": "images/real_9.jpg",
     "tags": [
       "quick",
       "iced",
@@ -129,7 +129,7 @@
     "id": 10,
     "name": "Brick Lane",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img4.png",
+    "image": "images/real_10.jpg",
     "tags": [
       "cozy",
       "hot",
@@ -143,7 +143,7 @@
     "id": 11,
     "name": "Industry Beans",
     "location": "Carlton",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img5.png",
+    "image": "images/real_11.jpg",
     "tags": [
       "specialty",
       "premium",
@@ -157,7 +157,7 @@
     "id": 12,
     "name": "Regulars",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img6.png",
+    "image": "images/real_12.jpg",
     "tags": [
       "local",
       "affordable",
@@ -171,7 +171,7 @@
     "id": 13,
     "name": "Good Measure",
     "location": "Melbourne CBD",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img1.png",
+    "image": "images/real_13.jpg",
     "tags": [
       "cozy",
       "flat white",
@@ -186,7 +186,7 @@
     "id": 14,
     "name": "Padre",
     "location": "Collingwood",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img2.png",
+    "image": "images/real_14.jpg",
     "tags": [
       "strong",
       "trendy",
@@ -200,7 +200,7 @@
     "id": 15,
     "name": "Brother Baba Budan",
     "location": "CBD",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img3.png",
+    "image": "images/real_15.jpg",
     "tags": [
       "iconic",
       "cozy",
@@ -214,7 +214,7 @@
     "id": 16,
     "name": "Patricia",
     "location": "Richmond",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img4.png",
+    "image": "images/real_16.jpg",
     "tags": [
       "cozy",
       "hipster",
@@ -228,7 +228,7 @@
     "id": 17,
     "name": "Palace",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img5.png",
+    "image": "images/real_17.jpg",
     "tags": [
       "premium",
       "cozy",
@@ -242,7 +242,7 @@
     "id": 18,
     "name": "Tone Coffee",
     "location": "Brunswick",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img6.png",
+    "image": "images/real_18.jpg",
     "tags": [
       "specialty",
       "cozy",
@@ -256,7 +256,7 @@
     "id": 19,
     "name": "Mork",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img1.png",
+    "image": "images/real_19.jpg",
     "tags": [
       "cozy",
       "brunch",
@@ -270,7 +270,7 @@
     "id": 20,
     "name": "Duke's",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img2.png",
+    "image": "images/real_20.jpg",
     "tags": [
       "classic",
       "hot",
@@ -284,7 +284,7 @@
     "id": 21,
     "name": "Campos",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img3.png",
+    "image": "images/real_21.jpg",
     "tags": [
       "chain",
       "reliable",
@@ -298,7 +298,7 @@
     "id": 22,
     "name": "Ini Studio",
     "location": "South Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img4.png",
+    "image": "images/real_22.jpg",
     "tags": [
       "cozy",
       "artsy",
@@ -312,7 +312,7 @@
     "id": 23,
     "name": "Acoffee",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img5.png",
+    "image": "images/real_23.jpg",
     "tags": [
       "black",
       "strong",
@@ -326,7 +326,7 @@
     "id": 24,
     "name": "Code Black",
     "location": "CBD",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img6.png",
+    "image": "images/real_24.jpg",
     "tags": [
       "roastery",
       "premium",
@@ -340,7 +340,7 @@
     "id": 25,
     "name": "Overlay",
     "location": "Melbourne",
-    "image": "https://eddiee-shin.github.io/melcoffee/images/img1.png",
+    "image": "images/real_25.jpg",
     "tags": [
       "iced",
       "trendy",
